@@ -52,13 +52,13 @@ function App() {
   }, [todos]);
 
   return (
-    <div className="container">
-      <div className="app">
-        <h1>Todo App</h1>
+    <div className="w-full flex justify-center p-4">
+      <div className="w-96 space-y-2">
+        <h1  className="text-3xl">Todo App</h1>
         <label>
           Title
           <input
-            className="textField"
+            className="border shadow rounded w-full p-1"
             type="text"
             placeholder="Hit the sack."
             onChange={handleTitleChange}
@@ -68,15 +68,15 @@ function App() {
         <label>
           Description
           <textarea
-            className="textField"
+            className="border shadow rounded w-full p-1"
             type="text"
             placeholder="I just want to sleep."
             onChange={handleDescriptionChange}
             ref={descriptionElement}
           />
         </label>
-        <div className="toolbar">
-          <button onClick={addTodo} className="button button-add">
+        <div className="flex justify-end">
+          <button onClick={addTodo} className="p-2 rounded bg-green-500 hover:bg-green-400 active:bg-green-500 active:scale-95 text-white transition">
             Add
           </button>
         </div>
