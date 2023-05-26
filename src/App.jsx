@@ -4,14 +4,9 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-  };
-
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
   };
 
   const handleCompletedChange = (e, index) => {
@@ -29,7 +24,6 @@ function App() {
   const addTodo = () => {
     const newTodo = {
       title,
-      description,
       completed: false,
     };
 
@@ -47,15 +41,6 @@ function App() {
               type="text"
               placeholder="Hit the sack."
               onChange={handleTitleChange}
-            />
-          </label>
-          <label>
-            Description
-            <textarea
-              className="textField"
-              type="text"
-              placeholder="I just want to sleep."
-              onChange={handleDescriptionChange}
             />
           </label>
         <div className="toolbar">
@@ -87,7 +72,7 @@ function App() {
                   onChange={(e) => handleCompletedChange(e, index)}
                 />
 
-                <span>{todo.title}</span>
+                <span className={todo.completed ? 'checked' : ''}>{todo.title}</span>
               </div>
               <button
                 onClick={() => handleDelete(index)}
