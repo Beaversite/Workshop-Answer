@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Todo from "./Todo.jsx";
 
 function App() {
@@ -7,17 +7,10 @@ function App() {
   );
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
 
-  const titleElement = useRef(null);
-  const descriptionElement = useRef(null);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-  };
-
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
   };
 
   const handleCompletedChange = (e, index) => {
@@ -35,16 +28,12 @@ function App() {
   const addTodo = () => {
     const newTodo = {
       title,
-      description,
       completed: false,
     };
 
     setTodos([...todos, newTodo]);
 
     setTitle("");
-    setDescription("");
-    titleElement.current.value = "";
-    descriptionElement.current.value = "";
   };
 
   useEffect(() => {
@@ -62,17 +51,7 @@ function App() {
             type="text"
             placeholder="Hit the sack."
             onChange={handleTitleChange}
-            ref={titleElement}
-          />
-        </label>
-        <label>
-          Description
-          <textarea
-            className="border shadow rounded w-full p-1"
-            type="text"
-            placeholder="I just want to sleep."
-            onChange={handleDescriptionChange}
-            ref={descriptionElement}
+            value={title}
           />
         </label>
         <div className="flex justify-end">
@@ -88,8 +67,8 @@ function App() {
 
         <Todo
           todos={todos}
-          onCheck={handleCompletedChange}
-          onDelete={handleDelete}
+          checkTodo={handleCompletedChange}
+          deleteTodo={handleDelete}
         ></Todo>
       </div>
     </div>
