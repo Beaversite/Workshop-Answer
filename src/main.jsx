@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import TodoItem from "./TodoItem.jsx";
+import TodoInfo from "./TodoInfo.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/:id",
-    element: <TodoItem />,
+    element: <TodoInfo />,
   }
 ]);
 

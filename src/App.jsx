@@ -9,21 +9,12 @@ function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const titleElement = useRef(null);
-  const descriptionElement = useRef(null);
-
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
-  };
-
-  const handleCompletedChange = (e, index) => {
-    const newTodos = [...todos];
-    newTodos[index].completed = e.target.checked;
-    setTodos(newTodos);
   };
 
   const handleDelete = (index) => {
@@ -36,15 +27,12 @@ function App() {
     const newTodo = {
       title,
       description,
-      completed: false,
     };
 
     setTodos([...todos, newTodo]);
 
     setTitle("");
     setDescription("");
-    titleElement.current.value = "";
-    descriptionElement.current.value = "";
   };
 
   useEffect(() => {
@@ -62,7 +50,7 @@ function App() {
             type="text"
             placeholder="Hit the sack."
             onChange={handleTitleChange}
-            ref={titleElement}
+            value={title}
           />
         </label>
         <label>
@@ -72,7 +60,7 @@ function App() {
             type="text"
             placeholder="I just want to sleep."
             onChange={handleDescriptionChange}
-            ref={descriptionElement}
+            value={description}
           />
         </label>
         <div className="flex justify-end">
@@ -88,8 +76,7 @@ function App() {
 
         <Todo
           todos={todos}
-          onCheck={handleCompletedChange}
-          onDelete={handleDelete}
+          deleteTodo={handleDelete}
         ></Todo>
       </div>
     </div>
