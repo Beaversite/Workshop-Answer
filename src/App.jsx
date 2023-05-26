@@ -7,17 +7,9 @@ function App() {
   );
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-
-  const titleElement = useRef(null);
-  const descriptionElement = useRef(null);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-  };
-
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
   };
 
   const handleCompletedChange = (e, index) => {
@@ -62,17 +54,6 @@ function App() {
             type="text"
             placeholder="Hit the sack."
             onChange={handleTitleChange}
-            ref={titleElement}
-          />
-        </label>
-        <label>
-          Description
-          <textarea
-            className="textField"
-            type="text"
-            placeholder="I just want to sleep."
-            onChange={handleDescriptionChange}
-            ref={descriptionElement}
           />
         </label>
         <div className="toolbar">

@@ -8,13 +8,13 @@ function Todo({ todos, onDelete, onCheck }) {
           <div key={index} className="todo">
             <div className="todo-title">
               <input
-                className="todo-checkbox"
+                className={`todo-checkbox`}
                 type="checkbox"
                 checked={todo.completed}
                 onChange={(e) => onCheck(e, index)}
               />
 
-              <span>{todo.title}</span>
+              <span className={todo.completed ? "checked" : ""}>{todo.title}</span>
             </div>
             <button
               onClick={() => onDelete(index)}
