@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Todo from "./Todo.jsx";
 
 function App() {
@@ -27,16 +27,12 @@ function App() {
   const addTodo = () => {
     const newTodo = {
       title,
-      description,
       completed: false,
     };
 
     setTodos([...todos, newTodo]);
 
     setTitle("");
-    setDescription("");
-    titleElement.current.value = "";
-    descriptionElement.current.value = "";
   };
 
   useEffect(() => {
@@ -54,6 +50,7 @@ function App() {
             type="text"
             placeholder="Hit the sack."
             onChange={handleTitleChange}
+            value={title}
           />
         </label>
         <div className="toolbar">
@@ -66,8 +63,8 @@ function App() {
 
         <Todo
           todos={todos}
-          onCheck={handleCompletedChange}
-          onDelete={handleDelete}
+          checkTodo={handleCompletedChange}
+          deleteTodo={handleDelete}
         ></Todo>
       </div>
     </div>

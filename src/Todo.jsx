@@ -1,4 +1,6 @@
-function Todo({ todos, onDelete, onCheck }) {
+import TodoItem from "./TodoItem";
+
+function Todo({ todos, deleteTodo, checkTodo  }) {
   return (
     <>
       {todos.length === 0 && <div className="noTodo">No todos found</div>}
@@ -6,22 +8,12 @@ function Todo({ todos, onDelete, onCheck }) {
       <div className="todos">
         {todos.map((todo, index) => (
           <div key={index} className="todo">
-            <div className="todo-title">
-              <input
-                className={`todo-checkbox`}
-                type="checkbox"
-                checked={todo.completed}
-                onChange={(e) => onCheck(e, index)}
-              />
-
-              <span className={todo.completed ? "checked" : ""}>{todo.title}</span>
-            </div>
-            <button
-              onClick={() => onDelete(index)}
-              className="button button-delete"
-            >
-              Delete
-            </button>
+            <TodoItem
+              todo={todo}
+              index={index}
+              deleteTodo={deleteTodo}
+              checkTodo={checkTodo}
+            />
           </div>
         ))}
       </div>
