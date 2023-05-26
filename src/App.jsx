@@ -28,6 +28,7 @@ function App() {
     };
 
     setTodos([...todos, newTodo]);
+    setTitle("");
   };
 
   return (
@@ -41,6 +42,7 @@ function App() {
               type="text"
               placeholder="Hit the sack."
               onChange={handleTitleChange}
+              value={title}
             />
           </label>
         <div className="toolbar">
