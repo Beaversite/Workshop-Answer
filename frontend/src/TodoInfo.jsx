@@ -8,7 +8,10 @@ import EditingTodo from "./EditingTodo.jsx";
 function TodoInfo() {
   const { id } = useParams(); // ดึงค่า ID จาก URL param
 
-  const [todo, setTodo] = useState({}); // Todo ที่จะแสดง
+  const [todo, setTodo] = useState({
+    title: "Todo Title",
+    description: "Todo Description",
+  }); // Todo ที่จะแสดง
   const [isEditing, setIsEditing] = useState(false); // กำลัง Edit อยู่หรือไม่
   const todoItem = [];
 
