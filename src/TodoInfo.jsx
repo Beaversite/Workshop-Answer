@@ -1,7 +1,15 @@
 import { useParams } from "react-router-dom";
+import { useState } from "react";
+import EditingTodo from "./EditingTodo";
+import TodoHeader from "./TodoHeader";
 
 function TodoItem() {
   const { id } = useParams();
+  const [isEditing, setIsEditing] = useState(false);
+  const [todo, setTodo] = useState({
+    title: "Todo Title",
+    description: "Todo Description",
+  });
   const todoItem = [
     {
       title: "Todo Title",
@@ -17,18 +25,11 @@ function TodoItem() {
     <div className="w-full flex justify-center p-4">
       <div className="w-96 space-y-2">
         <h1 className="text-3xl">Todo App</h1>
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl">{`Todo Title - ${id}`}</h2>
-          <button className="p-2 rounded bg-green-500 hover:bg-green-400 active:bg-green-500 active:scale-95 text-white transition">
-            Edit
-          </button>
-        </div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-          architecto vitae explicabo placeat enim, et ex voluptatibus possimus
-          maiores sed ab maxime doloremque! Aliquam cupiditate ipsa, iure
-          aspernatur optio a.
-        </p>
+        {isEditing ? (
+          <EditingTodo todo={todo} updateTodo={() => setIsEditing(!isEditing)} />
+        ) : (
+          <TodoHeader todo={todo} editTodo={() => setIsEditing(!isEditing)} />
+        )}
         <hr />
         <div className="flex w-ful gap-2">
           <input type="text" className="border shadow rounded w-full p-1" />
