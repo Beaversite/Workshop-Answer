@@ -12,7 +12,7 @@
 1. todoItem เป็น Relation โดย relation มาจาก todoItem และ เป็น multiple
 
 ## Exercise 3.3
-ให้น้องๆ แก้ไขไฟล์ TodoInfo.jsx และ Todo.jsx เป็นเมื่อกดปุ่ม Add ให้เพิ่มข้อมูล เข้าไปใน Collection todoItem ใน Pocket base
+ให้น้องๆ แก้ไขไฟล์ **TodoInfo.jsx** เป็นเมื่อกดปุ่ม Add ให้เพิ่มข้อมูล เข้าไปใน Collection todoItem ใน Pocket base
 
 ## Exercise 3.4
-ให้น้องๆ แก้ไขไฟล์ TodoInfo.jsx และ Todo.jsx เป็นเมื่อกดปุ่ม Delete ให้ลบข้อมูล ออกจาก Collection todoItem ใน Pocket base
+ให้น้องๆ แก้ไขไฟล์ **TodoInfo.jsx** เป็นเมื่อกดปุ่ม Delete ให้ลบข้อมูล ออกจาก Collection todoItem ใน Pocket base

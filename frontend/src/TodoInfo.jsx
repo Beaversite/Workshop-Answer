@@ -15,7 +15,9 @@ function TodoInfo() {
 
   useEffect(() => {
     const getTodo = async () => {
-      const fetchedTodo = await pb.collection("todo").getOne(id); // ทำการ Fetch Todo ที่มี ID ตามที่ระบุ
+      const fetchedTodo = await pb.collection("todo").getOne(id, {
+        expand: "todoItem",
+      }); // ทำการ Fetch Todo ที่มี ID ตามที่ระบุ
       setTodo(fetchedTodo);
       setTodoItem([]);
     };
@@ -27,19 +29,24 @@ function TodoInfo() {
   };
 
   const updateTodo = async (todo) => {
-    const updatedTodo = await pb.collection("todo").update(id, todo);
+    const updatedTodo = await pb.collection("todo").update(id, todo, {
+      expand: "todoItem",
+    });
     setTodo(updatedTodo);
     setIsEditing(false);
   };
 
+  // เพิ่ม todoItem ลงใน Collection todoItem ใน Pocketbase
   const addTodoItem = async () => {
     console.log("addTodoItem");
   };
 
+  // ลบ todoItem ออกจาก Collection todoItem ใน Pocketbase
   const deleteTodoItem = async (todoItemId) => {
     console.log("deleteTodoItem", todoItemId);
   };
 
+  // อัพเดท todoItem ใน Collection todoItem ใน Pocketbase
   const checkTodoItem = async (todoItemId) => {
     const todoItemInfo = todoItem.find((todoItem) => todoItem.id === todoItemId);
     const updatedTodoItem = await pb.collection("todoItem").update(todoItemId, {

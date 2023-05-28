@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Todo from "./Todo.jsx";
+import Todos from "./Todos.jsx";
 import pb from "./connector/pocketbase.js";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     setDescription(e.target.value);
   };
 
-  const handleDelete = async (id) => {
+  const deleteTodo = async (id) => {
     try {
       await pb.collection("todo").delete(id);
       setTodos(todos.filter((todo) => todo.id !== id));
@@ -84,10 +84,10 @@ function App() {
 
         <hr />
 
-        <Todo
+        <Todos
           todos={todos}
-          deleteTodo={handleDelete}
-        ></Todo>
+          deleteTodo={deleteTodo}
+        ></Todos>
       </div>
     </div>
   );

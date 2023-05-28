@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Todo({ todos, deleteTodo }) {
+function Todos({ todos, deleteTodo }) {
 
   if (todos.length === 0) {      
     return (
@@ -29,4 +29,4 @@ function Todo({ todos, deleteTodo }) {
   );
 }
 
-export default Todo;
+export default Todos;
