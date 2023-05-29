@@ -47,7 +47,12 @@ function App() {
   };
 
   const getTodos = async () => {
-    setTodos(await pb.collection("todo").getFullList());
+    try {
+      const fetchedTodos = await pb.collection("todo").getFullList();
+      setTodos(fetchedTodos);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -85,10 +90,7 @@ function App() {
 
         <hr />
 
-        <Todos
-          todos={todos}
-          deleteTodo={deleteTodo}
-        ></Todos>
+        <Todos todos={todos} deleteTodo={deleteTodo}></Todos>
       </div>
     </div>
   );
