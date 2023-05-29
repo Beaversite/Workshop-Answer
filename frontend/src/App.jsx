@@ -4,9 +4,13 @@ import pb from "./connector/pocketbase.js";
 
 function App() {
   const [todos, setTodos] = useState([]);
-
+  // ข้อมูลส่วนสำหรับ Form เพิ่มรายการ todo
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    getTodos();
+  }, []);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -42,12 +46,9 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const getTodos = async () => {
-      setTodos(await pb.collection("todo").getFullList());
-    };
-    getTodos();
-  }, []);
+  const getTodos = async () => {
+    setTodos(await pb.collection("todo").getFullList());
+  };
 
   return (
     <div className="w-full flex justify-center p-4">
