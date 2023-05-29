@@ -10,7 +10,7 @@ function TodoInfo() {
 
   const [todo, setTodo] = useState({}); // Todo ที่จะแสดง
   const [isEditing, setIsEditing] = useState(false); // กำลัง Edit อยู่หรือไม่
-  const [title, setTitle] = useState(""); // ชื่อ Todo
+  const [title, setTitle] = useState(""); // ชื่อ Todo ที่จะเพิ่มเข้าภายในรายการย่อย
 
   const getTodo = async () => {
     const fetchedTodo = await pb.collection("todo").getOne(id, {
@@ -23,37 +23,91 @@ function TodoInfo() {
     getTodo();
   }, [id]);
 
+  useEffect(() => {
+    console.log(todo);
+  }, [todo]);
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
 
   const updateTodo = async (todo) => {
-    const updatedTodo = await pb.collection("todo").update(id, todo, {
-      expand: "todoItem",
-    });
-    setTodo(updatedTodo);
-    setIsEditing(false);
+    try {
+      const updatedTodo = await pb.collection("todo").update(id, todo, {
+        expand: "todoItem",
+      });
+
+      // ทำการแก้ไข State เพื่อให้แสดงผลใหม่
+      setTodo(updatedTodo);
+      setIsEditing(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // เพิ่ม todoItem ลงใน Collection todoItem ใน Pocketbase
   const addTodoItem = async () => {
-    console.log("addTodoItem");
+    try {
+      const createdTodoItem = await pb.collection("todoItem").create({
+        title,
+        completed: false,
+      });
+
+      // Array ที่จะเก็บรายการ id ของ todoItem รวมของที่สร้างใหม่แล้วด้วย
+      const toUpdateTodoItem = [];
+      if (todo?.expand?.todoItem) {
+        toUpdateTodoItem.push(...todo.expand.todoItem.map((item) => item.id));
+      }
+      toUpdateTodoItem.push(createdTodoItem.id);
+
+      const updatedTodo = await pb.collection("todo").update(
+        id,
+        {
+          ...todo,
+          todoItem: toUpdateTodoItem,
+        },
+        {
+          expand: "todoItem",
+        }
+      );
+
+      // ทำการแก้ไข State เพื่อให้แสดงผลใหม่
+      setTodo(updatedTodo);
+      setTitle("");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // ลบ todoItem ออกจาก Collection todoItem ใน Pocketbase
   const deleteTodoItem = async (todoItemId) => {
-    console.log("deleteTodoItem", todoItemId);
+    try {
+      const isDeletedTodoItem = await pb.collection("todoItem").delete(todoItemId);
+      // ทำการแก้ไข State เพื่อให้แสดงผลใหม่
+      setTodo({ ...todo, expand: { todoItem: todo?.expand?.todoItem.filter((item) => item.id != todoItemId) } });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // อัพเดท todoItem ใน Collection todoItem ใน Pocketbase
   const checkTodoItem = async (todoItemId) => {
-    console.log(todoItemId);
-    // const todoItemInfo = todo..find((todoItem) => todoItem.id === todoItemId);
-    // const updatedTodoItem = await pb.collection("todoItem").update(todoItemId, {
-    //   completed: !todoItemInfo.completed,
-    // });
+    try {
+      const toChangeTodoItem = todo.expand.todoItem.find((item) => item.id === todoItemId); // object ของ todoItem ที่จะเปลี่ยนแปลง
+      const updatedTodoItem = await pb
+        .collection("todoItem")
+        .update(todoItemId, { ...toChangeTodoItem, completed: !toChangeTodoItem.completed });
 
-    // setTodoItem(todo.map((todoItem) => (todoItem.id === todoItemId ? updatedTodoItem : todoItem)));
+      // ทำการแก้ไข State เพื่อให้แสดงผลใหม่
+      setTodo({
+        ...todo,
+        expand: {
+          todoItem: todo.expand.todoItem.map((item) => (item.id === todoItemId ? updatedTodoItem : item)),
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -76,7 +130,11 @@ function TodoInfo() {
           </button>
         </div>
         <hr />
-        <DisplayTodoItems todoItems={todo?.todoItems || []} deleteTodoItem={deleteTodoItem} checkTodoItem={checkTodoItem} />
+        <DisplayTodoItems
+          todoItems={todo?.expand?.todoItem || []}
+          deleteTodoItem={deleteTodoItem}
+          checkTodoItem={checkTodoItem}
+        />
       </div>
     </div>
   );
