@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function EditingTodo({ todo: todoProp, updateTodo }) {
+function EditingTodo({ todo: todoProp,  updateTodoHeader }) {
   const [todo, setTodo] = useState(todoProp);
 
   const handleTitleChange = (e) => {
@@ -27,7 +27,7 @@ function EditingTodo({ todo: todoProp, updateTodo }) {
           defaultValue={todo.title}
         />
         <button
-          onClick={() => updateTodo(todo)}
+          onClick={() => updateTodoHeader(todo)}
           className="p-2 rounded bg-green-500 hover:bg-green-400 active:bg-green-500 active:scale-95 text-white transition"
         >
           Save

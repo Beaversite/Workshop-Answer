@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import pb from "./connector/pocketbase.js";
 import TodoHeader from "./TodoHeader.jsx";
 import DisplayTodoItems from "./DisplayTodoItems.jsx";
-import EditingTodo from "./EditingTodo.jsx";
+import EditingTodoHeader from "./EditingTodo.jsx";
 
 function TodoInfo() {
   const { id } = useParams(); // ดึงค่า ID จาก URL param
@@ -13,15 +13,19 @@ function TodoInfo() {
   const [title, setTitle] = useState(""); // ชื่อ Todo ที่จะเพิ่มเข้าภายในรายการย่อย
 
   const getTodo = async () => {
-    const fetchedTodo = await pb.collection("todo").getOne(id, {
-      expand: "todoItem",
-    }); // ทำการ Fetch Todo ที่มี ID ตามที่ระบุ
-    setTodo(fetchedTodo);
+    try {
+      const fetchedTodo = await pb.collection("todo").getOne(id, {
+        expand: "todoItem",
+      }); // ทำการ Fetch Todo ที่มี ID ตามที่ระบุ
+      setTodo(fetchedTodo);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     getTodo();
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     console.log(todo);
@@ -31,7 +35,8 @@ function TodoInfo() {
     setTitle(e.target.value);
   };
 
-  const updateTodo = async (todo) => {
+  // แก้ไขชื่อหัวข้อของ todo
+  const updateTodoHeader = async (todo) => {
     try {
       const updatedTodo = await pb.collection("todo").update(id, todo, {
         expand: "todoItem",
@@ -53,26 +58,15 @@ function TodoInfo() {
         completed: false,
       });
 
-      // Array ที่จะเก็บรายการ id ของ todoItem รวมของที่สร้างใหม่แล้วด้วย
-      const toUpdateTodoItem = [];
-      if (todo?.expand?.todoItem) {
-        toUpdateTodoItem.push(...todo.expand.todoItem.map((item) => item.id));
-      }
-      toUpdateTodoItem.push(createdTodoItem.id);
-
-      const updatedTodo = await pb.collection("todo").update(
+      const updateTodo = await pb.collection("todo").update(
         id,
         {
-          ...todo,
-          todoItem: toUpdateTodoItem,
+          todoItem: [...todo.todoItem, createdTodoItem.id],
         },
-        {
-          expand: "todoItem",
-        }
+        { expand: "todoItem" }
       );
-
-      // ทำการแก้ไข State เพื่อให้แสดงผลใหม่
-      setTodo(updatedTodo);
+      
+      setTodo(updateTodo);
       setTitle("");
     } catch (error) {
       console.log(error);
@@ -83,8 +77,8 @@ function TodoInfo() {
   const deleteTodoItem = async (todoItemId) => {
     try {
       const isDeletedTodoItem = await pb.collection("todoItem").delete(todoItemId);
-      // ทำการแก้ไข State เพื่อให้แสดงผลใหม่
-      setTodo({ ...todo, expand: { todoItem: todo?.expand?.todoItem.filter((item) => item.id != todoItemId) } });
+      // ทำการ Fetch todo ใหม่เพื่อให้แสดงผลใหม่
+      getTodo()
     } catch (error) {
       console.log(error);
     }
@@ -98,13 +92,8 @@ function TodoInfo() {
         .collection("todoItem")
         .update(todoItemId, { ...toChangeTodoItem, completed: !toChangeTodoItem.completed });
 
-      // ทำการแก้ไข State เพื่อให้แสดงผลใหม่
-      setTodo({
-        ...todo,
-        expand: {
-          todoItem: todo.expand.todoItem.map((item) => (item.id === todoItemId ? updatedTodoItem : item)),
-        },
-      });
+      // ทำการ Fetch todo ใหม่เพื่อให้แสดงผลใหม่
+      getTodo()
     } catch (error) {
       console.log(error);
     }
@@ -117,7 +106,7 @@ function TodoInfo() {
         {!isEditing ? (
           <TodoHeader todo={todo} editTodo={() => setIsEditing(!isEditing)} />
         ) : (
-          <EditingTodo todo={todo} updateTodo={updateTodo} />
+          <EditingTodoHeader todo={todo} updateTodoHeader={updateTodoHeader} />
         )}
         <hr />
         <div className="flex w-ful gap-2">

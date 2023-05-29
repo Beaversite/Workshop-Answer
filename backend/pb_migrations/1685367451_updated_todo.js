@@ -1,20 +1,20 @@
 migrate((db) => {
   const dao = new Dao(db)
-  const collection = dao.findCollectionByNameOrId("pxj9dhj3ceawqab")
+  const collection = dao.findCollectionByNameOrId("hesewu4jw7oirap")
 
   // add
   collection.schema.addField(new SchemaField({
     "system": false,
-    "id": "gpeus5of",
+    "id": "krus15lo",
     "name": "todoItem",
     "type": "relation",
     "required": false,
     "unique": false,
     "options": {
-      "collectionId": "6dchbzs48v5g1vt",
+      "collectionId": "smzeb9fss8xp0ft",
       "cascadeDelete": false,
       "minSelect": null,
-      "maxSelect": 1,
+      "maxSelect": null,
       "displayFields": []
     }
   }))
@@ -22,10 +22,10 @@ migrate((db) => {
   return dao.saveCollection(collection)
 }, (db) => {
   const dao = new Dao(db)
-  const collection = dao.findCollectionByNameOrId("pxj9dhj3ceawqab")
+  const collection = dao.findCollectionByNameOrId("hesewu4jw7oirap")
 
   // remove
-  collection.schema.removeField("gpeus5of")
+  collection.schema.removeField("krus15lo")
 
   return dao.saveCollection(collection)
 })

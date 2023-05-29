@@ -1,5 +1,4 @@
 function DisplayTodoItems({ todoItems, deleteTodoItem, checkTodoItem }) {
-  
   if (todoItems.length === 0) {
     return <div className="text-center text-gray-500">No todo found</div>;
   }
@@ -8,10 +7,7 @@ function DisplayTodoItems({ todoItems, deleteTodoItem, checkTodoItem }) {
     <>
       <div className="space-y-2">
         {todoItems.map((todoItem) => (
-          <div
-            key={todoItem.id}
-            className="flex justify-between items-center border shadow rounded p-2"
-          >
+          <div key={todoItem.id} className="flex justify-between items-center border shadow rounded p-2">
             <div className="flex w-full gap-2">
               <input
                 type="checkbox"

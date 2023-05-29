@@ -9,16 +9,8 @@ function App() {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    getTodos();
+    getTodos()
   }, []);
-
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
-
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
-  };
 
   const deleteTodo = async (id) => {
     try {
@@ -30,14 +22,13 @@ function App() {
   };
 
   const addTodo = async () => {
-    const newTodo = {
+    const toAddTodo = {
       title,
       description,
-      completed: false,
     };
 
     try {
-      const createTodo = await pb.collection("todo").create(newTodo);
+      const createTodo = await pb.collection("todo").create(toAddTodo);
       setTodos([...todos, createTodo]);
       setTitle("");
       setDescription("");
@@ -65,7 +56,7 @@ function App() {
             className="border shadow rounded w-full p-1"
             type="text"
             placeholder="Hit the sack."
-            onChange={handleTitleChange}
+            onChange={(e) => setTitle(e.target.value)}
             value={title}
           />
         </label>
@@ -75,7 +66,7 @@ function App() {
             className="border shadow rounded w-full p-1"
             type="text"
             placeholder="I just want to sleep."
-            onChange={handleDescriptionChange}
+            onChange={(e) => setDescription(e.target.value)}
             value={description}
           />
         </label>

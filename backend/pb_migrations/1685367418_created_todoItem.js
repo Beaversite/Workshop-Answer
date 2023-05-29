@@ -1,20 +1,15 @@
 migrate((db) => {
-  const dao = new Dao(db);
-  const collection = dao.findCollectionByNameOrId("t8sx848xq2kwl3s");
-
-  return dao.deleteCollection(collection);
-}, (db) => {
   const collection = new Collection({
-    "id": "t8sx848xq2kwl3s",
-    "created": "2023-05-26 17:34:40.596Z",
-    "updated": "2023-05-26 17:34:40.596Z",
+    "id": "smzeb9fss8xp0ft",
+    "created": "2023-05-29 13:36:58.887Z",
+    "updated": "2023-05-29 13:36:58.887Z",
     "name": "todoItem",
     "type": "base",
     "system": false,
     "schema": [
       {
         "system": false,
-        "id": "pd1v26u8",
+        "id": "5miq82ih",
         "name": "title",
         "type": "text",
         "required": false,
@@ -27,7 +22,7 @@ migrate((db) => {
       },
       {
         "system": false,
-        "id": "nwhbdnvt",
+        "id": "dkfogwqr",
         "name": "completed",
         "type": "bool",
         "required": false,
@@ -36,13 +31,18 @@ migrate((db) => {
       }
     ],
     "indexes": [],
-    "listRule": "",
-    "viewRule": "",
-    "createRule": "",
-    "updateRule": "",
-    "deleteRule": "",
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
     "options": {}
   });
 
   return Dao(db).saveCollection(collection);
+}, (db) => {
+  const dao = new Dao(db);
+  const collection = dao.findCollectionByNameOrId("smzeb9fss8xp0ft");
+
+  return dao.deleteCollection(collection);
 })
