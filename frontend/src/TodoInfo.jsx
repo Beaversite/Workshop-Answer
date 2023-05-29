@@ -11,16 +11,15 @@ function TodoInfo() {
   const [todo, setTodo] = useState({}); // Todo ที่จะแสดง
   const [isEditing, setIsEditing] = useState(false); // กำลัง Edit อยู่หรือไม่
   const [title, setTitle] = useState(""); // ชื่อ Todo
-  const [todoItem, setTodoItem] = useState([]);
+
+  const getTodo = async () => {
+    const fetchedTodo = await pb.collection("todo").getOne(id, {
+      expand: "todoItem",
+    }); // ทำการ Fetch Todo ที่มี ID ตามที่ระบุ
+    setTodo(fetchedTodo);
+  };
 
   useEffect(() => {
-    const getTodo = async () => {
-      const fetchedTodo = await pb.collection("todo").getOne(id, {
-        expand: "todoItem",
-      }); // ทำการ Fetch Todo ที่มี ID ตามที่ระบุ
-      setTodo(fetchedTodo);
-      setTodoItem([]);
-    };
     getTodo();
   }, [id]);
 
@@ -48,15 +47,13 @@ function TodoInfo() {
 
   // อัพเดท todoItem ใน Collection todoItem ใน Pocketbase
   const checkTodoItem = async (todoItemId) => {
-    const todoItemInfo = todoItem.find((todoItem) => todoItem.id === todoItemId);
-    const updatedTodoItem = await pb.collection("todoItem").update(todoItemId, {
-      completed: !todoItemInfo.completed,
-    });
-    setTodoItem(
-      todoItem.map((todoItem) =>
-        todoItem.id === todoItemId ? updatedTodoItem : todoItem
-      )
-    );
+    console.log(todoItemId);
+    // const todoItemInfo = todo..find((todoItem) => todoItem.id === todoItemId);
+    // const updatedTodoItem = await pb.collection("todoItem").update(todoItemId, {
+    //   completed: !todoItemInfo.completed,
+    // });
+
+    // setTodoItem(todo.map((todoItem) => (todoItem.id === todoItemId ? updatedTodoItem : todoItem)));
   };
 
   return (
@@ -70,12 +67,7 @@ function TodoInfo() {
         )}
         <hr />
         <div className="flex w-ful gap-2">
-          <input
-            onChange={handleTitleChange}
-            value={title}
-            type="text"
-            className="border shadow rounded w-full p-1"
-          />
+          <input onChange={handleTitleChange} value={title} type="text" className="border shadow rounded w-full p-1" />
           <button
             onClick={addTodoItem}
             className="p-2 rounded bg-green-500 hover:bg-green-400 active:bg-green-500 active:scale-95 text-white transition"
@@ -84,11 +76,7 @@ function TodoInfo() {
           </button>
         </div>
         <hr />
-        <DisplayTodoItems
-          todoItem={todoItem}
-          deleteTodoItem={deleteTodoItem}
-          checkTodoItem={checkTodoItem}
-        />
+        <DisplayTodoItems todoItems={todo?.todoItems || []} deleteTodoItem={deleteTodoItem} checkTodoItem={checkTodoItem} />
       </div>
     </div>
   );
